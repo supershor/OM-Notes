@@ -37,7 +37,7 @@ android {
 dependencies {
     implementation ("com.intuit.ssp:ssp-android:1.1.1")
     implementation ("com.intuit.sdp:sdp-android:1.1.1")
-    implementation ("com.airbnb.android:lottie:2.8.0")
+    implementation ("com.airbnb.android:lottie:6.2.0")
 
 
     implementation (libs.play.services.auth)

@@ -4,33 +4,66 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:orientation="vertical"
+    android:background="@color/white"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-
-    <FrameLayout
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:id="@+id/frame_layout_main"
-        android:layout_height="match_parent"/>
-
     <LinearLayout
-        android:id="@+id/liner_layout_sign_in_process"
+        android:id="@+id/liner_layout_main_view"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.appcompat.widget.Toolbar
+            app:title="--"
+            android:background="@color/white"
+            app:titleTextColor="@color/black"
+            app:subtitleTextColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/toolbar_main_page"/>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:id="@+id/frame_layout_main"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+
+
+    <RelativeLayout
         android:visibility="gone"
+        android:id="@+id/liner_layout_sign_in_process"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <com.airbnb.lottie.LottieAnimationView
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_300sdp"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
-            app:lottie_rawRes="@raw/notes_loading"/>
+            app:lottie_rawRes="@raw/notes_main_page"/>
         <com.google.android.gms.common.SignInButton
+            android:background="@color/black"
+            android:layout_marginBottom="@dimen/_100sdp"
+            android:layout_alignParentBottom="true"
             android:layout_gravity="center"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginStart="@dimen/_50sdp"
+            android:layout_marginEnd="@dimen/_50sdp"
             android:id="@+id/ontap"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"/>
-    </LinearLayout>
+        <com.airbnb.lottie.LottieAnimationView
+            android:background="#E0E0E0"
+            android:visibility="gone"
+            android:id="@+id/loading"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/notes_loading"/>
+    </RelativeLayout>
 </LinearLayout>

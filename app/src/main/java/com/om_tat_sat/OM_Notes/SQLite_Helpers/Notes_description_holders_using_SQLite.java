@@ -58,7 +58,7 @@ public class Notes_description_holders_using_SQLite extends SQLiteOpenHelper {
         contentValues.put(Parameters_for_SQLite_Email_Password.column_email,email);
         contentValues.put(Parameters_for_SQLite_notes_and_description.column_title,new_title);
         contentValues.put(Parameters_for_SQLite_notes_and_description.column_description,new_description);
-        String where_query="WHERE "+Parameters_for_SQLite_notes_and_description.column_id+" = "+id;
+        String where_query=Parameters_for_SQLite_notes_and_description.column_id+" = "+id;
         database.update(Parameters_for_SQLite_notes_and_description.table_name,contentValues,where_query,null);
     }
     public void delete_note(Integer id){
@@ -67,7 +67,7 @@ public class Notes_description_holders_using_SQLite extends SQLiteOpenHelper {
         //The unique id will be used here as where query
 
         SQLiteDatabase database=getWritableDatabase();
-        String where_query="WHERE "+Parameters_for_SQLite_notes_and_description.column_id+" = "+id;
+        String where_query=Parameters_for_SQLite_notes_and_description.column_id+" = "+id;
         database.delete(Parameters_for_SQLite_notes_and_description.table_name,where_query,null);
     }
 
@@ -80,7 +80,7 @@ public class Notes_description_holders_using_SQLite extends SQLiteOpenHelper {
         ArrayList<Notes_title_description_id_holder>notes_description_arraylist=new ArrayList();
 
         SQLiteDatabase database=getReadableDatabase();
-        String where_query="SELECT * FROM "+Parameters_for_SQLite_notes_and_description.table_name+" WHERE "+Parameters_for_SQLite_Email_Password.column_email+" = "+email;
+        String where_query="SELECT * FROM "+Parameters_for_SQLite_notes_and_description.table_name+" WHERE "+Parameters_for_SQLite_Email_Password.column_email+" = '"+email+"'";
         Cursor cursor=database.rawQuery(where_query,null);
         if (cursor.moveToFirst()){
             do {

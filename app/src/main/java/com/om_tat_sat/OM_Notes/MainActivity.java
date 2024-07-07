@@ -8,10 +8,15 @@ import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResult;
@@ -31,6 +36,7 @@ import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.gms.auth.api.identity.BeginSignInRequest;
 import com.google.android.gms.auth.api.identity.BeginSignInResult;
 import com.google.android.gms.auth.api.identity.Identity;
@@ -48,8 +54,11 @@ import com.om_tat_sat.OM_Notes.SQLite_Helpers.Email_address_holders_using_SQLite
 
 public class MainActivity extends AppCompatActivity {
     FrameLayout frameLayout;
-    LinearLayout liner_layout_sign_in_process;
+    LinearLayout liner_layout_main_view;
+    Toolbar toolbar;
+    RelativeLayout liner_layout_sign_in_process;
     SharedPreferences email_address;
+    LottieAnimationView loading;
     private SignInClient oneTapClient;
     private BeginSignInRequest signUpRequest;
     com.google.android.gms.common.SignInButton Google_sign_in_button;
@@ -63,8 +72,16 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        //tool bar setup
+        toolbar=findViewById(R.id.toolbar_main_page);
+        toolbar.setTitle(getString(R.string.app_name));
+        setSupportActionBar(toolbar);
+
+
         email_address=getSharedPreferences("Emails_and_Password",0);
         frameLayout=findViewById(R.id.frame_layout_main);
+        liner_layout_main_view=findViewById(R.id.liner_layout_main_view);
+        loading=findViewById(R.id.loading);
         liner_layout_sign_in_process=findViewById(R.id.liner_layout_sign_in_process);
 
         oneTapClient = Identity.getSignInClient(MainActivity.this);
@@ -82,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
             public void onActivityResult(ActivityResult o) {
                 if (o.getResultCode()==RESULT_OK){
                     try {
+                        Log.e( "onClick:-----------","44444444444444444444");
                         SignInCredential credential = oneTapClient.getSignInCredentialFromIntent(o.getData());
                         String idToken = credential.getGoogleIdToken();
                         if (idToken != null) {
@@ -94,9 +112,16 @@ public class MainActivity extends AppCompatActivity {
                             editor.putString("password",credential.getDisplayName());
                             editor.apply();
                             Email_address_holders_using_SQLite email_password =new Email_address_holders_using_SQLite(MainActivity.this);
+                            liner_layout_main_view.setVisibility(View.VISIBLE);
+                            liner_layout_sign_in_process.setVisibility(View.GONE);
+                            FragmentManager fragmentManager=getSupportFragmentManager();
+                            FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+                            fragmentTransaction.replace(R.id.frame_layout_main,new List_of_notes());
+                            fragmentTransaction.commit();
                             Toast.makeText(MainActivity.this,email_password.login_try(credential.getId(),credential.getDisplayName()), Toast.LENGTH_SHORT).show();
                             Log.e("onActivityResult: >>>>>>>>",credential.getId().replace("@gmail.com",""));
                             Log.e("onActivityResult: >>>>>>>>",credential.getDisplayName().replace("@gmail.com",""));
+                            Log.e( "onClick:-----------","555555555555555555");
                         }
                     }catch (Exception e){
                         Log.e( "onActivityResult:--------",e.toString());
@@ -107,9 +132,14 @@ public class MainActivity extends AppCompatActivity {
 
 
         if (email_address.contains("email")){
-            //
+            liner_layout_main_view.setVisibility(View.VISIBLE);
+            liner_layout_sign_in_process.setVisibility(View.GONE);
+            FragmentManager fragmentManager=getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.frame_layout_main,new List_of_notes());
+            fragmentTransaction.commit();
         }else {
-            frameLayout.setVisibility(View.GONE);
+            liner_layout_main_view.setVisibility(View.GONE);
             liner_layout_sign_in_process.setVisibility(View.VISIBLE);
 
 
@@ -118,11 +148,16 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
+                    loading.setVisibility(View.VISIBLE);
+                    Log.e( "onClick:-----------","11111111111111111");
+
 
                     oneTapClient.beginSignIn(signUpRequest)
                             .addOnSuccessListener(MainActivity.this, new OnSuccessListener<BeginSignInResult>() {
                                 @Override
                                 public void onSuccess(BeginSignInResult result) {
+                                    Log.e( "onClick:-----------","2222222222222222");
+                                    loading.setVisibility(View.GONE);
                                     IntentSenderRequest intentSenderRequest=new IntentSenderRequest.Builder(result.getPendingIntent().getIntentSender()).build();
                                     activityResultLauncher.launch(intentSenderRequest);
                                 }
@@ -130,6 +165,8 @@ public class MainActivity extends AppCompatActivity {
                             .addOnFailureListener(MainActivity.this,new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
+                                    loading.setVisibility(View.GONE);
+                                    Log.e( "onClick:-----------","333333333333333333333");
                                     // No Google Accounts found. Just continue presenting the signed-out UI.
                                     Log.d("Errors in Google Sign In",e.toString());
                                 }
@@ -141,5 +178,23 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        new MenuInflater(this).inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId()==R.id.logout){
+            SharedPreferences.Editor editor=email_address.edit();
+            editor.clear();
+            editor.apply();
+            liner_layout_main_view.setVisibility(View.GONE);
+            liner_layout_sign_in_process.setVisibility(View.VISIBLE);
+            startActivity(new Intent(MainActivity.this,MainActivity.class));
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
