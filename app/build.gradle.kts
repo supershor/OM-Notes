@@ -35,8 +35,11 @@ android {
 }
 
 dependencies {
+    //noinspection UseTomlInstead
     implementation ("com.intuit.ssp:ssp-android:1.1.1")
+    //noinspection UseTomlInstead
     implementation ("com.intuit.sdp:sdp-android:1.1.1")
+    //noinspection UseTomlInstead
     implementation ("com.airbnb.android:lottie:6.2.0")
 
 

@@ -54,13 +54,13 @@ public class Add_edit_notes extends Fragment {
         back=view.findViewById(R.id.back);
         notes_id_holder=getActivity().getSharedPreferences("Add_edit_notes",0);
         email_address=getActivity().getSharedPreferences("Emails_and_Password",0);
-
+        Notes_description_holders_using_SQLite notesDescriptionHoldersUsingSqLite=new Notes_description_holders_using_SQLite(getContext());
 
 
         if (notes_id_holder.contains("id")){
-            title_str=notes_id_holder.getString("title",null);
-            description_str=notes_id_holder.getString("title",null);
             id_str=notes_id_holder.getInt("id",-1)+"";
+            title_str=notes_id_holder.getString("title",null);
+            description_str=notesDescriptionHoldersUsingSqLite.fetch_desc_according_to_id(id_str);
             title.setText(title_str);
             description.setText(description_str);
             length.setText(description_str.length() +" Characters");

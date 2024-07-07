@@ -89,4 +89,23 @@ public class Notes_description_holders_using_SQLite extends SQLiteOpenHelper {
         }
         return notes_description_arraylist;
     }
+
+
+    public String fetch_desc_according_to_id(String id){
+
+        //Here I am fetching description from sql as shared preferences were not able to transfer string greater then 1000 characters
+        //The id address will be used here as where query
+        //I will also be returning a description of notes
+
+        ArrayList<Notes_title_description_id_holder>notes_description_arraylist=new ArrayList();
+
+        SQLiteDatabase database=getReadableDatabase();
+        String where_query="SELECT * FROM "+Parameters_for_SQLite_notes_and_description.table_name+" WHERE "+Parameters_for_SQLite_notes_and_description.column_id+" = '"+id+"'";
+        Cursor cursor=database.rawQuery(where_query,null);
+        if (cursor.moveToFirst()){
+            return cursor.getString(3);
+        }else {
+            return "failed";
+        }
+    }
 }

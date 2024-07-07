@@ -70,6 +70,7 @@
             android:textColor="@color/black"
             />
         <EditText
+            android:maxLength="30000"
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_marginStart="@dimen/_8sdp"
             android:layout_marginEnd="@dimen/_8sdp"

@@ -42,7 +42,7 @@
             android:layout_height="@dimen/_300sdp"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
-            app:lottie_rawRes="@raw/notes_main_page"/>
+            app:lottie_rawRes="@raw/a1"/>
         <com.google.android.gms.common.SignInButton
             android:background="@color/black"
             android:layout_marginBottom="@dimen/_100sdp"
@@ -64,6 +64,6 @@
             android:layout_height="match_parent"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
-            app:lottie_rawRes="@raw/notes_loading"/>
+            app:lottie_rawRes="@raw/notes_main_page"/>
     </RelativeLayout>
 </LinearLayout>
