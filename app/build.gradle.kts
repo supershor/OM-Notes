@@ -3,6 +3,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        create("release") {
+            storeFile = file("C:\\Users\\ashis\\OneDrive\\Documents\\Android keys\\OM_Writes.jks")
+            storePassword = "ashish72240"
+            keyAlias = "key0"
+            keyPassword = "ashish72240"
+        }
+    }
     namespace = "com.om_tat_sat.OM_Notes"
     compileSdk = 34
 
@@ -23,6 +31,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {

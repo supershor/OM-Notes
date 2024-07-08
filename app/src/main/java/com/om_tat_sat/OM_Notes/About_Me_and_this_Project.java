@@ -2,22 +2,18 @@ package com.om_tat_sat.OM_Notes;
 
 public class About_Me_and_this_Project {
     /*
-    Hello Everyone
+    Hello everyone,
 
-    This is Ashish Sahu,
+    I'm Ashish Sahu, an Android Developer Intern passionate about creating impactful apps. 📱✨
 
-    This is a Notes App assignment that was given by internshala to me for a better understanding of me.
-    I completed this project in 1 day.( Raat bhar jagna pada 😂😂 )
-    I have only used SQLite, Shared Preferences and only one main activity as asked in the assignment.
-    And now I am thinking of making this app more better, once I have completed this assignment using both offline and online accessibility.
-    And if anyone from Intershala is reading I hope to hear positive about my application.
-    Even if I get rejected please do let me know because Internshala holds a position in my heart as it helped
-    me a lot, it was the only place where I got my first break through as a intern.
-    I would love to contribute to Internshala, and I believe I have the capability to do so.
-    Hope you all enjoy this app
+    This Notes App project was assigned by Internshala, and I completed it in just one day (yes, burning the midnight oil! 😂).
+    I've used SQLite and Shared Preferences, following the assignment guidelines of having only one main activity.
 
-    Thanks for reading
-    Ashish Sahu
+    But that's not all! I'm excited to enhance this app further, adding both offline and online accessibility features.
+    If anyone from Internshala is reading this, I hope you'll appreciate my work.
+    Even if I face rejection, I'm grateful to Internshala—it's where I got my first internship breakthrough. 🙌
+
+    I'm eager to contribute more to Internshala because I believe in its mission. Enjoy using this app, and feel free to reach out!
 
     Contact Me
     Email - thesahuashish@gmail.com
