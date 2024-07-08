@@ -86,7 +86,6 @@ public class Notes_adapter extends RecyclerView.Adapter<Notes_adapter.ViewHolder
             edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, getAdapterPosition()+"--"+"edit", Toast.LENGTH_SHORT).show();
                     onClickRecycler.onClick(getAdapterPosition(),1);
                 }
             });
@@ -95,7 +94,6 @@ public class Notes_adapter extends RecyclerView.Adapter<Notes_adapter.ViewHolder
             delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, getAdapterPosition()+"--"+"delete", Toast.LENGTH_SHORT).show();
                     onClickRecycler.onClick(getAdapterPosition(),2);
                 }
             });
