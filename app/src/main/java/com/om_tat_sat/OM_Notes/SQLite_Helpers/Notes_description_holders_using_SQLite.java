@@ -25,7 +25,6 @@ public class Notes_description_holders_using_SQLite extends SQLiteOpenHelper {
 
         //Creating a sql table to save notes of users with columns Email, unique id, notes, and its descriptions
         //unique id is INTEGER PRIMARY KEY AUTOINCREMENT for better reliability in sql tables and so that notes with same title can be made again and again
-
         String create="CREATE TABLE "+Parameters_for_SQLite_notes_and_description.table_name+" ( "+ Parameters_for_SQLite_Email_Password.column_email+" Text," + Parameters_for_SQLite_notes_and_description.column_id +" INTEGER PRIMARY KEY AUTOINCREMENT," +Parameters_for_SQLite_notes_and_description.column_title+" Text,"+Parameters_for_SQLite_notes_and_description.column_description+" Text )";
         db.execSQL(create);
     }
@@ -39,7 +38,6 @@ public class Notes_description_holders_using_SQLite extends SQLiteOpenHelper {
 
         //Here I am trying to save the data in table when user add a new note the parameters used are email, notes title and notes description
         //The unique id will get auto incremented
-
         SQLiteDatabase database=getWritableDatabase();
         ContentValues contentValues=new ContentValues();
         contentValues.put(Parameters_for_SQLite_Email_Password.column_email,email);
@@ -52,7 +50,6 @@ public class Notes_description_holders_using_SQLite extends SQLiteOpenHelper {
 
         //Here I am trying to update the data in table when user changes notes title and notes description
         //The unique id will be used here as where query
-
         SQLiteDatabase database=getWritableDatabase();
         ContentValues contentValues=new ContentValues();
         contentValues.put(Parameters_for_SQLite_Email_Password.column_email,email);
@@ -65,7 +62,6 @@ public class Notes_description_holders_using_SQLite extends SQLiteOpenHelper {
 
         //Here I am trying to delete the data in table when user taps on delete button
         //The unique id will be used here as where query
-
         SQLiteDatabase database=getWritableDatabase();
         String where_query=Parameters_for_SQLite_notes_and_description.column_id+" = "+id;
         database.delete(Parameters_for_SQLite_notes_and_description.table_name,where_query,null);
@@ -76,9 +72,9 @@ public class Notes_description_holders_using_SQLite extends SQLiteOpenHelper {
         //Here I am fetching all the data's for current user
         //The email id address will be used here as where query
         //I will also be returning a arraylist of notes and description for recyclerview
-
         ArrayList<Notes_title_description_id_holder>notes_description_arraylist=new ArrayList();
 
+        //Here I am fetching all the data's for current user
         SQLiteDatabase database=getReadableDatabase();
         String where_query="SELECT * FROM "+Parameters_for_SQLite_notes_and_description.table_name+" WHERE "+Parameters_for_SQLite_Email_Password.column_email+" = '"+email+"'";
         Cursor cursor=database.rawQuery(where_query,null);
@@ -96,9 +92,9 @@ public class Notes_description_holders_using_SQLite extends SQLiteOpenHelper {
         //Here I am fetching description from sql as shared preferences were not able to transfer string greater then 1000 characters
         //The id address will be used here as where query
         //I will also be returning a description of notes
-
         ArrayList<Notes_title_description_id_holder>notes_description_arraylist=new ArrayList();
 
+        //Here I am fetching description
         SQLiteDatabase database=getReadableDatabase();
         String where_query="SELECT * FROM "+Parameters_for_SQLite_notes_and_description.table_name+" WHERE "+Parameters_for_SQLite_notes_and_description.column_id+" = '"+id+"'";
         Cursor cursor=database.rawQuery(where_query,null);

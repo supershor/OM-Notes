@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -15,7 +14,6 @@ import com.om_tat_sat.OM_Notes.Parameters_for_SQLite.Parameters_for_SQLite_Email
 public class Email_address_holders_using_SQLite extends SQLiteOpenHelper {
 
     //here I am trying to make a table in SQLite for storing email and password of users and I will be tracking it using sqlite
-
     public Email_address_holders_using_SQLite(@Nullable Context context) {
         super(context, Parameters_for_SQLite_Email_Password.name, null, Parameters_for_SQLite_Email_Password.version);
     }
@@ -24,7 +22,6 @@ public class Email_address_holders_using_SQLite extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         //Creating a table named email_password.db with table name email_password and columns email and password and version 1
-
         String create="CREATE TABLE "+Parameters_for_SQLite_Email_Password.table_name+" ("+Parameters_for_SQLite_Email_Password.column_email+" Text PRIMARY KEY, "+Parameters_for_SQLite_Email_Password.column_password+" Text)";
         db.execSQL(create);
     }
@@ -39,13 +36,10 @@ public class Email_address_holders_using_SQLite extends SQLiteOpenHelper {
         //Here I am trying to check if the email and password is correct or not and if user does not Exists then it will return false
         //And will try making him signup using the email and password if user does not exist
         //We are also checking passwords here
-
         SQLiteDatabase database=getReadableDatabase();
         String query="SELECT * FROM "+Parameters_for_SQLite_Email_Password.table_name +" WHERE "+Parameters_for_SQLite_Email_Password.column_email+" = '"+email+"'";
         Cursor cursor=database.rawQuery(query,null);
-        if (cursor.moveToFirst()){
-            Log.e("login_try:-----------",cursor.getString(0)+"_-_"+cursor.getString(1));
-            if (cursor.getString(1).equals(password)){
+        if (cursor.moveToFirst()){if (cursor.getString(1).equals(password)){
                 return "Login Successful";
             }else {
                 return "Wrong Password";
@@ -65,7 +59,6 @@ public class Email_address_holders_using_SQLite extends SQLiteOpenHelper {
 
         //Here I am trying to signup the user using the email and password
         //Since every email is unique a new data will be created in the table
-
         SQLiteDatabase database=getWritableDatabase();
         ContentValues contentValues=new ContentValues();
         contentValues.put(Parameters_for_SQLite_Email_Password.column_email,email);

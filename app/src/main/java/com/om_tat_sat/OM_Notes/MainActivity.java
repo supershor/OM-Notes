@@ -53,15 +53,21 @@ import com.google.android.gms.tasks.Task;
 import com.om_tat_sat.OM_Notes.SQLite_Helpers.Email_address_holders_using_SQLite;
 
 public class MainActivity extends AppCompatActivity {
+
+    //This is the global variables
     FrameLayout frameLayout;
     LinearLayout liner_layout_main_view;
     Toolbar toolbar;
     RelativeLayout liner_layout_sign_in_process;
     SharedPreferences email_address;
     LottieAnimationView loading;
+
+    //Google Sign In
     private SignInClient oneTapClient;
     private BeginSignInRequest signUpRequest;
     com.google.android.gms.common.SignInButton Google_sign_in_button;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,18 +78,25 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         //tool bar setup
         toolbar=findViewById(R.id.toolbar_main_page);
         toolbar.setTitle(getString(R.string.app_name));
         setSupportActionBar(toolbar);
 
-
+        //SharedPreferences for storing email and password
         email_address=getSharedPreferences("Emails_and_Password",0);
+
+        //FrameLayout for fragments
         frameLayout=findViewById(R.id.frame_layout_main);
+
+        //LinearLayout for sign in process and main view
         liner_layout_main_view=findViewById(R.id.liner_layout_main_view);
         loading=findViewById(R.id.loading);
         liner_layout_sign_in_process=findViewById(R.id.liner_layout_sign_in_process);
 
+
+        //Google Sign In Initialization
         oneTapClient = Identity.getSignInClient(MainActivity.this);
         signUpRequest = BeginSignInRequest.builder()
                 .setGoogleIdTokenRequestOptions(BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
@@ -94,36 +107,50 @@ public class MainActivity extends AppCompatActivity {
                         .setFilterByAuthorizedAccounts(false)
                         .build())
                 .build();
+
+        //Google Sign In Listener for sign in process and main view when user taps on sign in button in sign in process
         ActivityResultLauncher<IntentSenderRequest> activityResultLauncher=registerForActivityResult(new ActivityResultContracts.StartIntentSenderForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult o) {
+
+                //Will be checking if result is ok or not
                 if (o.getResultCode()==RESULT_OK){
+
+                    //try catch block for getting exception
                     try {
-                        Log.e( "onClick:-----------","44444444444444444444");
+
+                        //storing data in credential variable for getting id token
                         SignInCredential credential = oneTapClient.getSignInCredentialFromIntent(o.getData());
                         String idToken = credential.getGoogleIdToken();
+
+                        //if token is not null then it will try to login the user
                         if (idToken != null) {
-                            // Got an ID token from Google. Use it to authenticate
-                            // with your backend.
-                            Log.e("onActivityResult: >>>>>>>>",credential.getId().replace("@gmail.com",""));
-                            Log.e("onActivityResult: >>>>>>>>",credential.getDisplayName().replace("@gmail.com",""));
+
+                            //SharedPreferences for storing email and password
                             SharedPreferences.Editor editor=email_address.edit();
                             editor.putString("email",credential.getId());
                             editor.putString("password",credential.getDisplayName());
                             editor.apply();
+
+                            //Email_address_holders_using_SQLite being initialized for storing data in SQLite database
                             Email_address_holders_using_SQLite email_password =new Email_address_holders_using_SQLite(MainActivity.this);
+
+                            //shifting to list of notes fragment
+                            //Also hiding sign in process and showing main view
                             liner_layout_main_view.setVisibility(View.VISIBLE);
                             liner_layout_sign_in_process.setVisibility(View.GONE);
+
+                            //FragmentManager for replacing fragments
+                            //list of notes fragment
                             FragmentManager fragmentManager=getSupportFragmentManager();
                             FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
                             fragmentTransaction.replace(R.id.frame_layout_main,new List_of_notes());
                             fragmentTransaction.commit();
                             Toast.makeText(MainActivity.this,email_password.login_try(credential.getId(),credential.getDisplayName()), Toast.LENGTH_SHORT).show();
-                            Log.e("onActivityResult: >>>>>>>>",credential.getId().replace("@gmail.com",""));
-                            Log.e("onActivityResult: >>>>>>>>",credential.getDisplayName().replace("@gmail.com",""));
-                            Log.e( "onClick:-----------","555555555555555555");
                         }
                     }catch (Exception e){
+
+                        //Handling exception
                         Log.e( "onActivityResult:--------",e.toString());
                     }
                 }
@@ -131,33 +158,45 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        //Checking if user is already logged in or not
         if (email_address.contains("email")){
+
+            //If user is already logged in then it will shift to list of notes fragment and hide sign in process
             liner_layout_main_view.setVisibility(View.VISIBLE);
             liner_layout_sign_in_process.setVisibility(View.GONE);
+
+            //FragmentManager for replacing fragments list of notes fragment
             FragmentManager fragmentManager=getSupportFragmentManager();
             FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.frame_layout_main,new List_of_notes());
             fragmentTransaction.commit();
         }else {
+
+            //If user is not logged in then it will show sign in process and hide main view
             liner_layout_main_view.setVisibility(View.GONE);
             liner_layout_sign_in_process.setVisibility(View.VISIBLE);
 
 
+            //Google Sign In Listener for sign in process and main view when user taps on sign in button in sign in process
             Google_sign_in_button=findViewById(R.id.ontap);
             Google_sign_in_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
+                    //loading animation for sign in process started
                     loading.setVisibility(View.VISIBLE);
-                    Log.e( "onClick:-----------","11111111111111111");
+
 
 
                     oneTapClient.beginSignIn(signUpRequest)
                             .addOnSuccessListener(MainActivity.this, new OnSuccessListener<BeginSignInResult>() {
                                 @Override
                                 public void onSuccess(BeginSignInResult result) {
-                                    Log.e( "onClick:-----------","2222222222222222");
+
+                                    //hiding loading animation
                                     loading.setVisibility(View.GONE);
+
+                                    // Display the One Tap UI
                                     IntentSenderRequest intentSenderRequest=new IntentSenderRequest.Builder(result.getPendingIntent().getIntentSender()).build();
                                     activityResultLauncher.launch(intentSenderRequest);
                                 }
@@ -165,8 +204,11 @@ public class MainActivity extends AppCompatActivity {
                             .addOnFailureListener(MainActivity.this,new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
+
+                                    //hiding loading animation
+                                    //Handling exception
                                     loading.setVisibility(View.GONE);
-                                    Log.e( "onClick:-----------","333333333333333333333");
+
                                     // No Google Accounts found. Just continue presenting the signed-out UI.
                                     Log.d("Errors in Google Sign In",e.toString());
                                 }
