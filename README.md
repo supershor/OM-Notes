@@ -18,6 +18,10 @@ I'm eager to contribute more to Internshala because I believe in its mission. En
 - GitHub: [supershor](https://github.com/supershor?tab=repositories)
 - Play Store: [My Developer Profile](https://play.google.com/store/apps/dev?id=8081285417360475284)
 
+**Screen Shots:**
+
+![Copy of Copy of PANCHA TATVA](https://github.com/supershor/OM-Notes/assets/113038485/e69f4a07-923e-4e63-9ff7-26a0568993cc)
+
 **Screen Recording:**
 
 https://github.com/supershor/OM-Notes/assets/113038485/527480be-fc6f-45b2-85b1-2eec5a7eb37f
